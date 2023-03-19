@@ -1,10 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { RAPID_API_KEY } from "@env";
 
-const rapidApiKey = RAPID_API_KEY;
-
-const useFetch = ({ endPoint }) => {
+const useFetch = (endPoint, query) => {
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -13,24 +10,37 @@ const useFetch = ({ endPoint }) => {
         method: "GET",
         url: `https://jsearch.p.rapidapi.com/${endPoint}`,
         headers: {
-            "X-RapidAPI-Key": rapidApiKey,
+            "X-RapidAPI-Key":
+                "0e04c6d01dmsh26cfc19f3c02b14p18bf4djsnab25cf585788",
             "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
         },
-        params: {
-            query: "Python developer in Texas, USA",
-            page: "1",
-            num_pages: "1",
-        },
+        params: { ...query },
     };
 
-    axios
-        .request(options)
-        .then(function (response) {
-            console.log(response.data);
-        })
-        .catch(function (error) {
-            console.error(error);
-        });
+    const FetchData = () => {
+        setIsLoading(true);
+        try {
+            axios.request(options).then((response) => {
+                setData(response.data.data);
+                setIsLoading(false);
+            });
+        } catch (error) {
+            setError(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        FetchData();
+    }, []);
+
+    const reFetch = () => {
+        setIsLoading(true);
+        FetchData();
+    };
+
+    return { data, isLoading, error, reFetch };
 };
 
 export default useFetch;
