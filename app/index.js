@@ -23,7 +23,7 @@ const Home = () => {
                     ),
                     headerRight: () => (
                         <ScreenHeaderBtn
-                            iconUrl={icons.profile}
+                            iconUrl={images.profile}
                             dimension="100%"
                         />
                     ),
@@ -33,8 +33,8 @@ const Home = () => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ flex: 1, padding: SIZES.medium }}>
                     <Welcome />
-                    <Nearbyjobs />
                     <Popularjobs />
+                    <Nearbyjobs />
                 </View>
             </ScrollView>
         </SafeAreaView>
